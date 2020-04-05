@@ -4,27 +4,36 @@
 /*5 fois plus de production (mail Nathalie: 13/07/2017)*/
 /*concentration de TGFB1 requise pour avoir une activité génétique de 50% (mail Nathalie: 13/07/2017: 100% - 2ng/ml - à convertir en molécule par unité de masse)*/
 /*Demi-période de l'activation des gènes (à corriger/au pif)*/
-%var: 'COL1_gene_deactivation_rate' (ln2/2.000000) 
-%var: 'COL1_gene_activation_rate' (100.000000/'COL1_gene_deactivation_rate') 
-%var: 'COL1_synthesis_by_gene_expression_rate' ('COL1_equilibrium'*([max] 0 (5.000000-1))*'COL1_deg_rate'/100) 
+%obs: 'COL1_gene_deactivation_rate' (ln2/2.000000) 
+%obs: 'COL1_gene_activation_rate' (100.000000/'COL1_gene_deactivation_rate')  
+%obs: 'COL1_synthesis_by_gene_expression_rate' ('COL1_equilibrium'*([max] 0 (5.000000-1))*'COL1_deg_rate'/100) 
 
 
 /*TGFB1 induit les gènes pour synthétiser COL1 (mail Nathalie: 13/07/2017)*/
 /*2 fois plus de production (mail Nathalie: 13/07/2017)*/
 /*concentration de TGFB1 requise pour avoir une activité génétique de 50% (mail Nathalie: 13/07/2017: 100% - 2ng/ml - à convertir en molécule par unité de masse)*/
 /*Demi-période de l'activation des gènes (à corriger/au pif)*/
-%var: 'DCN_gene_deactivation_rate' (ln2/2.000000) 
-%var: 'DCN_gene_activation_rate' (100.000000/'DCN_gene_deactivation_rate') 
-%var: 'DCN_synthesis_by_gene_expression_rate' ('DCN_equilibrium'*([max] 0 (2.000000-1))*'DCN_deg_rate'/100) 
+%obs: 'DCN_gene_deactivation_rate' (ln2/2.000000) 
+%obs: 'DCN_gene_activation_rate' (100.000000/'DCN_gene_deactivation_rate')  
+%obs: 'DCN_synthesis_by_gene_expression_rate' ('DCN_equilibrium'*([max] 0 (2.000000-1))*'DCN_deg_rate'/100) 
 
 
 /*TGFB1 induit les gènes pour synthétiser COL1 (mail Nathalie: 13/07/2017)*/
 /*10 fois plus de production (mail Nathalie: 13/07/2017)*/
 /*concentration de TGFB1 requise pour avoir une activité génétique de 50% (mail Nathalie: 13/07/2017: 100% - 2ng/ml - à convertir en molécule par unité de masse)*/
 /*Demi-période de l'activation des gènes (à corriger/au pif)*/
-%var: 'MMP2_gene_deactivation_rate' (ln2/2.000000) 
-%var: 'MMP2_gene_activation_rate' (100.000000/'MMP2_gene_deactivation_rate') 
-%var: 'MMP2_synthesis_by_gene_expression_rate' ('MMP2_equilibrium'*([max] 0 (10.000000-1))*'MMP2_deg_rate'/100) 
+%obs: 'MMP2_gene_deactivation_rate' (ln2/2.000000) 
+%obs: 'MMP2_gene_activation_rate' (100.000000/'MMP2_gene_deactivation_rate')  
+%obs: 'MMP2_synthesis_by_gene_expression_rate' ('MMP2_equilibrium'*([max] 0 (10.000000-1))*'MMP2_deg_rate'/100) 
+
+
+/*TGFB1 induit les gènes pour synthétiser TIMP1 (mail Nathalie: 13/07/2017)*/
+/*5 fois plus de production (mail Nathalie: 13/07/2017)*/
+/*concentration de TGFB1 requise pour avoir une activité génétique de 50% (mail Nathalie - 13/07/2017 - 100% - 2ng/ml - à convertir en molécule par unité de masse)*/
+/*Demi-période de l'activation des gènes (à corriger/au pif)*/
+%obs: 'TIMP1_gene_deactivation_rate' (ln2/2.000000) 
+%obs: 'TIMP1_gene_activation_rate' (100.000000/'TIMP1_gene_deactivation_rate')  
+%obs: 'TIMP1_synthesis_by_gene_expression_rate' ('TIMP1_equilibrium'*([max] 0 (5.000000-1))*'TIMP1_deg_rate'/100) 
 
 
 
@@ -33,18 +42,24 @@
 %agent: GENE_COL1(x{hidden,visible}) 
 %init: 100 GENE_COL1()/*genes activity is expressed in percent*/
 
-'COL1 high activation' GENE_COL1(x{hidden}) , TGFB1(state{active}) -> GENE_COL1(x{visible}) , TGFB1(state{active}) @ 'COL1_gene_activation_rate'*'coef_un' 
-'COL1 gene deactivation' GENE_COL1(x{visible}) -> GENE_COL1(x{hidden}) @ 'COL1_gene_deactivation_rate'*'coef_un' 
-'COL1 synthesis by GENE_COL1' GENE_COL1(x{visible}),. -> GENE_COL1(x{visible}) , COL1()  @ 'COL1_synthesis_by_gene_expression_rate' * 'coef_zero' 
+'COL1 high activation' GENE_COL1(x{hidden}) , TGFB1(state{active}) -> GENE_COL1(x{visible}) , TGFB1(state{active}) | 1 COL1_g1 @ 'COL1_gene_activation_rate' 
+'COL1 gene deactivation' GENE_COL1(x{visible}) -> GENE_COL1(x{hidden}) | 1 COL1_g2 @ 'COL1_gene_deactivation_rate'
+'COL1 synthesis by GENE_COL1' GENE_COL1(x{visible}),. -> GENE_COL1(x{visible}) , COL1() | 1 COL1_g3  @ 'COL1_synthesis_by_gene_expression_rate' 
 %agent: GENE_DCN(x{hidden,visible}) 
 %init: 100 GENE_DCN()/*genes activity is expressed in percent*/
 
-'DCN high activation' GENE_DCN(x{hidden}) , TGFB1(state{active}) -> GENE_DCN(x{visible}) , TGFB1(state{active}) @ 'DCN_gene_activation_rate'*'coef_un' 
-'DCN gene deactivation' GENE_DCN(x{visible}) -> GENE_DCN(x{hidden}) @ 'DCN_gene_deactivation_rate'*'coef_un' 
-'DCN synthesis by GENE_DCN' GENE_DCN(x{visible}),. -> GENE_DCN(x{visible}) , DCN()  @ 'DCN_synthesis_by_gene_expression_rate' * 'coef_zero' 
+'DCN high activation' GENE_DCN(x{hidden}) , TGFB1(state{active}) -> GENE_DCN(x{visible}) , TGFB1(state{active}) | 1 DCN_g1 @ 'DCN_gene_activation_rate' 
+'DCN gene deactivation' GENE_DCN(x{visible}) -> GENE_DCN(x{hidden}) | 1 DCN_g2 @ 'DCN_gene_deactivation_rate'
+'DCN synthesis by GENE_DCN' GENE_DCN(x{visible}),. -> GENE_DCN(x{visible}) , DCN() | 1 DCN_g3  @ 'DCN_synthesis_by_gene_expression_rate' 
 %agent: GENE_MMP2(x{hidden,visible}) 
 %init: 100 GENE_MMP2()/*genes activity is expressed in percent*/
 
-'MMP2 high activation' GENE_MMP2(x{hidden}) , TGFB1(state{active}) -> GENE_MMP2(x{visible}) , TGFB1(state{active}) @ 'MMP2_gene_activation_rate'*'coef_un' 
-'MMP2 gene deactivation' GENE_MMP2(x{visible}) -> GENE_MMP2(x{hidden}) @ 'MMP2_gene_deactivation_rate'*'coef_un' 
-'MMP2 synthesis by GENE_MMP2' GENE_MMP2(x{visible}),. -> GENE_MMP2(x{visible}) , MMP2()  @ 'MMP2_synthesis_by_gene_expression_rate' * 'coef_zero' 
+'MMP2 high activation' GENE_MMP2(x{hidden}) , TGFB1(state{active}) -> GENE_MMP2(x{visible}) , TGFB1(state{active}) | 1 MMP2_g1 @ 'MMP2_gene_activation_rate' 
+'MMP2 gene deactivation' GENE_MMP2(x{visible}) -> GENE_MMP2(x{hidden}) | 1 MMP2_g2 @ 'MMP2_gene_deactivation_rate'
+'MMP2 synthesis by GENE_MMP2' GENE_MMP2(x{visible}),. -> GENE_MMP2(x{visible}) , MMP2() | 1 MMP2_g3  @ 'MMP2_synthesis_by_gene_expression_rate' 
+%agent: GENE_TIMP1(x{hidden,visible}) 
+%init: 100 GENE_TIMP1()/*genes activity is expressed in percent*/
+
+'TIMP1 high activation' GENE_TIMP1(x{hidden}) , TGFB1(state{active}) -> GENE_TIMP1(x{visible}) , TGFB1(state{active}) | 1 TIMP1_g1 @ 'TIMP1_gene_activation_rate' 
+'TIMP1 gene deactivation' GENE_TIMP1(x{visible}) -> GENE_TIMP1(x{hidden}) | 1 TIMP1_g2 @ 'TIMP1_gene_deactivation_rate'
+'TIMP1 synthesis by GENE_TIMP1' GENE_TIMP1(x{visible}),. -> GENE_TIMP1(x{visible}) , TIMP1() | 1 TIMP1_g3  @ 'TIMP1_synthesis_by_gene_expression_rate' 

@@ -44,7 +44,7 @@
 %var: 'ITGAVB6_mw' 85936.000000
 %var: 'ITGAVB6_init' 'ITGAVB6_mg_per_kg'*'ITGAVB6_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
-%var: 'ITGAVB8_mg_per_kg' 0.000010
+%var: 'ITGAVB8_mg_per_kg' 0.010000
 %var: 'ITGAVB8_mw' 85632.000000
 %var: 'ITGAVB8_init' 'ITGAVB8_mg_per_kg'*'ITGAVB8_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
@@ -72,7 +72,7 @@
 %var: 'ADAMTS4_mw' 90197.000000
 %var: 'ADAMTS4_init' 'ADAMTS4_mg_per_kg'*'ADAMTS4_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
-%var: 'ADAMTS10_mg_per_kg' 0.000010
+%var: 'ADAMTS10_mg_per_kg' 0.010000
 %var: 'ADAMTS10_mw' 120874.000000
 %var: 'ADAMTS10_init' 'ADAMTS10_mg_per_kg'*'ADAMTS10_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
@@ -116,7 +116,7 @@
 %var: 'TIMP1_mw' 23171.000000
 %var: 'TIMP1_init' 'TIMP1_mg_per_kg'*'TIMP1_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
-%var: 'TIMP2_mg_per_kg' 0.000010
+%var: 'TIMP2_mg_per_kg' 0.010000
 %var: 'TIMP2_mw' 24399.000000
 %var: 'TIMP2_init' 'TIMP2_mg_per_kg'*'TIMP2_mw'*'n_avogadro'*'mole'*('mg'/'kg')*'coef_amount'
 
